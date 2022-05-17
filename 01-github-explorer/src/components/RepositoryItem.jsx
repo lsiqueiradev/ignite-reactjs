@@ -1,4 +1,4 @@
-function RepositoryItem ({ repository}) {
+function RepositoryItem ({ repository }) {
   return (
     <li>
       <strong>{repository.name ?? 'No name'}</strong>
