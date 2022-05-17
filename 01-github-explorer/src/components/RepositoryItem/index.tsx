@@ -1,4 +1,6 @@
-function RepositoryItem ({ repository }) {
+import { IRepositoryItemProps } from "./@interfaces";
+
+function RepositoryItem ({ repository } : IRepositoryItemProps) {
   return (
     <li>
       <strong>{repository.name ?? 'No name'}</strong>
