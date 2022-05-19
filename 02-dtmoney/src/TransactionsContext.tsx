@@ -18,13 +18,12 @@ interface TransactionsProviderProps {
 
 interface TransactionsContextData {
   transactions: Transaction[];
-  createTransaction: (transaction: TransactionInput) => void;
+  createTransaction: (transaction: TransactionInput) => Promise<void>;
 }
 
 const TransactionsContext = createContext<TransactionsContextData>({} as TransactionsContextData);
 
 function TransactionsProvider({ children }: TransactionsProviderProps) {
-
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
@@ -32,9 +31,17 @@ function TransactionsProvider({ children }: TransactionsProviderProps) {
       .then((reponse) => setTransactions(reponse.data.transactions))
   }, [])
 
-  function createTransaction(transaction: TransactionInput) {
+  async function createTransaction(transactionInput: TransactionInput) {
+    const response = await api.post('/transactions', {
+      ...transactionInput,
+      createdAt: new Date(),
+    });
+    const { transaction } = response.data;
+    setTransactions([
+      ...transactions,
+      transaction
+    ]);
 
-    api.post('/transactions', transaction);
   }
 
   return (
